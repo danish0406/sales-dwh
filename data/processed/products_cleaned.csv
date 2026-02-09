@@ -1,0 +1,9 @@
+product_id,product_name,category,base_price,sub_category,brand,cost_price,selling_price,supplier,is_active
+P001,Laptop Pro,Electronics,1200.0,General,Default Brand,840.0,1200.0,Default Supplier,True
+P002,Wireless Mouse,Accessories,45.99,General,Default Brand,32.193,45.99,Default Supplier,True
+P003,Gaming Chair,Furniture,299.99,General,Default Brand,209.993,299.99,Default Supplier,True
+P004,"Monitor 27""",Electronics,399.99,General,Default Brand,279.993,399.99,Default Supplier,True
+P005,Mechanical Keyboard,Accessories,129.99,General,Default Brand,90.993,129.99,Default Supplier,True
+P006,Webcam HD,Electronics,79.99,General,Default Brand,55.992999999999995,79.99,Default Supplier,True
+P007,Desk Lamp,Furniture,39.99,General,Default Brand,27.993,39.99,Default Supplier,True
+P008,USB-C Hub,Accessories,34.99,General,Default Brand,24.493,34.99,Default Supplier,True

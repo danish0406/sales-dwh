@@ -1,0 +1,101 @@
+customer_id,customer_name,email,segment,city,state,country,region,join_date
+CUST0001,Sandra Carter,sandra.carter@example.com,Consumer,Boston,NY,USA,North,2023-11-06 01:17:02.719285
+CUST0002,Stephanie Watson,stephanie.watson@example.com,Home Office,Baltimore,MD,USA,East,2023-05-20 01:17:02.719324
+CUST0003,Matthew Bell,matthew.bell@example.com,Consumer,Baltimore,MD,USA,East,2023-06-09 01:17:02.719346
+CUST0004,David Ward,david.ward@example.com,Home Office,Boston,NY,USA,North,2024-08-11 01:17:02.719362
+CUST0005,Joseph Thompson,joseph.thompson@example.com,Consumer,Philadelphia,MD,USA,East,2024-06-04 01:17:02.719380
+CUST0006,Nancy Price,nancy.price@example.com,Corporate,Houston,TX,USA,South,2023-07-11 01:17:02.719399
+CUST0007,Emily Clark,emily.clark@example.com,Consumer,Houston,TX,USA,South,2025-05-06 01:17:02.719417
+CUST0008,Kimberly Jones,kimberly.jones@example.com,Home Office,Philadelphia,MD,USA,East,2024-08-30 01:17:02.719433
+CUST0009,Timothy Ramirez,timothy.ramirez@example.com,Home Office,Boston,NY,USA,North,2025-02-25 01:17:02.719449
+CUST0010,Nicholas Rodriguez,nicholas.rodriguez@example.com,Consumer,Washington DC,MD,USA,East,2025-02-14 01:17:02.719466
+CUST0011,Cynthia Smith,cynthia.smith@example.com,Corporate,Seattle,CA,USA,West,2024-01-14 01:17:02.719482
+CUST0012,Joseph Murphy,joseph.murphy@example.com,Consumer,Chicago,NY,USA,North,2024-03-11 01:17:02.719500
+CUST0013,Michelle Ramirez,michelle.ramirez@example.com,Home Office,Chicago,NY,USA,North,2024-12-20 01:17:02.719517
+CUST0014,Kathleen Peterson,kathleen.peterson@example.com,Consumer,San Francisco,CA,USA,West,2023-06-23 01:17:02.719545
+CUST0015,Sandra Garcia,sandra.garcia@example.com,Consumer,Baltimore,MD,USA,East,2024-01-07 01:17:02.719563
+CUST0016,Emily Carter,emily.carter@example.com,Home Office,Boston,NY,USA,North,2023-06-10 01:17:02.719580
+CUST0017,Nancy Lopez,nancy.lopez@example.com,Home Office,Chicago,NY,USA,North,2024-05-05 01:17:02.719598
+CUST0018,Brenda Hernandez,brenda.hernandez@example.com,Consumer,Boston,NY,USA,North,2023-05-18 01:17:02.719615
+CUST0019,Jacob Wilson,jacob.wilson@example.com,Consumer,San Francisco,CA,USA,West,2025-07-12 01:17:02.719633
+CUST0020,Matthew Price,matthew.price@example.com,Home Office,Washington DC,MD,USA,East,2024-01-20 01:17:02.719650
+CUST0021,Barbara Scott,barbara.scott@example.com,Corporate,Chicago,NY,USA,North,2024-05-05 01:17:02.719667
+CUST0022,Sharon Murphy,sharon.murphy@example.com,Consumer,Miami,TX,USA,South,2023-12-26 01:17:02.719690
+CUST0023,Kimberly Moore,kimberly.moore@example.com,Home Office,Baltimore,MD,USA,East,2025-03-20 01:17:02.719711
+CUST0024,Stephanie Collins,stephanie.collins@example.com,Home Office,Chicago,NY,USA,North,2024-07-12 01:17:02.719729
+CUST0025,Christopher Anderson,christopher.anderson@example.com,Home Office,New York,NY,USA,North,2024-10-03 01:17:02.719748
+CUST0026,Angela Sanchez,angela.sanchez@example.com,Corporate,Miami,TX,USA,South,2025-02-01 01:17:02.719765
+CUST0027,Jennifer King,jennifer.king@example.com,Home Office,Houston,TX,USA,South,2023-09-25 01:17:02.719782
+CUST0028,Deborah Carter,deborah.carter@example.com,Consumer,Atlanta,TX,USA,South,2024-01-15 01:17:02.719800
+CUST0029,Charles Turner,charles.turner@example.com,Corporate,Seattle,CA,USA,West,2025-03-27 01:17:02.719817
+CUST0030,Ryan Howard,ryan.howard@example.com,Home Office,New York,NY,USA,North,2025-04-08 01:17:02.719834
+CUST0031,Mark Stewart,mark.stewart@example.com,Corporate,Philadelphia,MD,USA,East,2024-03-06 01:17:02.719851
+CUST0032,Donna Davis,donna.davis@example.com,Home Office,New York,NY,USA,North,2025-01-19 01:17:02.719867
+CUST0033,Kevin Ramirez,kevin.ramirez@example.com,Home Office,Houston,TX,USA,South,2025-06-23 01:17:02.719884
+CUST0034,Deborah Johnson,deborah.johnson@example.com,Home Office,Chicago,NY,USA,North,2024-12-21 01:17:02.719902
+CUST0035,Lisa Gonzalez,lisa.gonzalez@example.com,Home Office,Atlanta,TX,USA,South,2023-06-26 01:17:02.719924
+CUST0036,Jeffrey Watson,jeffrey.watson@example.com,Consumer,Seattle,CA,USA,West,2024-03-14 01:17:02.719941
+CUST0037,Emily Clark,emily.clark@example.com,Corporate,Los Angeles,CA,USA,West,2024-08-26 01:17:02.719958
+CUST0038,Stephen Thomas,stephen.thomas@example.com,Corporate,Houston,TX,USA,South,2025-11-18 01:17:02.719975
+CUST0039,Brandon Sanchez,brandon.sanchez@example.com,Home Office,Philadelphia,MD,USA,East,2024-12-02 01:17:02.719992
+CUST0040,James Stewart,james.stewart@example.com,Corporate,Atlanta,TX,USA,South,2024-03-12 01:17:02.720009
+CUST0041,Richard Flores,richard.flores@example.com,Consumer,Atlanta,TX,USA,South,2023-08-19 01:17:02.720030
+CUST0042,Stephen Allen,stephen.allen@example.com,Consumer,Chicago,NY,USA,North,2025-04-12 01:17:02.720048
+CUST0043,Betty Rivera,betty.rivera@example.com,Home Office,New York,NY,USA,North,2025-01-21 01:17:02.720066
+CUST0044,Ashley Collins,ashley.collins@example.com,Home Office,Miami,TX,USA,South,2023-10-09 01:17:02.720083
+CUST0045,Sarah Williams,sarah.williams@example.com,Corporate,Washington DC,MD,USA,East,2023-07-10 01:17:02.720101
+CUST0046,Susan Morgan,susan.morgan@example.com,Consumer,New York,NY,USA,North,2024-04-09 01:17:02.720118
+CUST0047,Eric Flores,eric.flores@example.com,Corporate,Chicago,NY,USA,North,2025-03-01 01:17:02.720134
+CUST0048,Rebecca Sanders,rebecca.sanders@example.com,Corporate,Boston,NY,USA,North,2024-03-04 01:17:02.720151
+CUST0049,Ruth Sanders,ruth.sanders@example.com,Home Office,New York,NY,USA,North,2023-12-13 01:17:02.720167
+CUST0050,Sharon Ross,sharon.ross@example.com,Corporate,New York,NY,USA,North,2024-09-06 01:17:02.720185
+CUST0051,Kenneth Morgan,kenneth.morgan@example.com,Home Office,Seattle,CA,USA,West,2025-01-31 01:17:02.720202
+CUST0052,Dorothy Rogers,dorothy.rogers@example.com,Corporate,Chicago,NY,USA,North,2023-05-19 01:17:02.720218
+CUST0053,Eric Jones,eric.jones@example.com,Home Office,New York,NY,USA,North,2025-12-03 01:17:02.720233
+CUST0054,Anna Taylor,anna.taylor@example.com,Corporate,New York,NY,USA,North,2024-06-12 01:17:02.720253
+CUST0055,Robert Stewart,robert.stewart@example.com,Corporate,Boston,NY,USA,North,2024-11-07 01:17:02.720270
+CUST0056,Gary Morgan,gary.morgan@example.com,Home Office,Chicago,NY,USA,North,2023-05-16 01:17:02.720288
+CUST0057,William White,william.white@example.com,Corporate,Baltimore,MD,USA,East,2025-08-20 01:17:02.720304
+CUST0058,Linda Wright,linda.wright@example.com,Consumer,Philadelphia,MD,USA,East,2023-07-07 01:17:02.720322
+CUST0059,Jason Lee,jason.lee@example.com,Corporate,Seattle,CA,USA,West,2024-04-18 01:17:02.720339
+CUST0060,Karen Harris,karen.harris@example.com,Home Office,Seattle,CA,USA,West,2024-03-25 01:17:02.720357
+CUST0061,Barbara Sanchez,barbara.sanchez@example.com,Corporate,San Francisco,CA,USA,West,2024-05-22 01:17:02.720378
+CUST0062,Michael Garcia,michael.garcia@example.com,Home Office,Chicago,NY,USA,North,2023-12-27 01:17:02.720395
+CUST0063,Paul Harris,paul.harris@example.com,Home Office,Baltimore,MD,USA,East,2024-06-07 01:17:02.720411
+CUST0064,Ashley Phillips,ashley.phillips@example.com,Corporate,Los Angeles,CA,USA,West,2023-09-01 01:17:02.720428
+CUST0065,Carol Young,carol.young@example.com,Corporate,Miami,TX,USA,South,2023-09-18 01:17:02.720445
+CUST0066,Kimberly Bell,kimberly.bell@example.com,Consumer,Philadelphia,MD,USA,East,2024-03-10 01:17:02.720462
+CUST0067,Sharon Bailey,sharon.bailey@example.com,Home Office,Baltimore,MD,USA,East,2025-07-10 01:17:02.720478
+CUST0068,Kenneth Cox,kenneth.cox@example.com,Consumer,Boston,NY,USA,North,2025-09-15 01:17:02.720495
+CUST0069,Eric Cox,eric.cox@example.com,Corporate,New York,NY,USA,North,2024-11-23 01:17:02.720511
+CUST0070,Jennifer Johnson,jennifer.johnson@example.com,Corporate,Houston,TX,USA,South,2024-04-23 01:17:02.720531
+CUST0071,Elizabeth Green,elizabeth.green@example.com,Home Office,Chicago,NY,USA,North,2024-04-21 01:17:02.720549
+CUST0072,Scott Davis,scott.davis@example.com,Corporate,San Francisco,CA,USA,West,2024-01-23 01:17:02.720566
+CUST0073,Carol Stewart,carol.stewart@example.com,Home Office,Houston,TX,USA,South,2023-09-01 01:17:02.720588
+CUST0074,Kenneth Sanders,kenneth.sanders@example.com,Consumer,New York,NY,USA,North,2024-03-15 01:17:02.720605
+CUST0075,Jeffrey Wood,jeffrey.wood@example.com,Home Office,Chicago,NY,USA,North,2025-09-11 01:17:02.720622
+CUST0076,Brandon Morgan,brandon.morgan@example.com,Home Office,Los Angeles,CA,USA,West,2023-12-13 01:17:02.720638
+CUST0077,Sarah Barnes,sarah.barnes@example.com,Consumer,Houston,TX,USA,South,2024-04-04 01:17:02.720655
+CUST0078,Emily Evans,emily.evans@example.com,Corporate,New York,NY,USA,North,2025-08-27 01:17:02.720675
+CUST0079,Stephen Reed,stephen.reed@example.com,Home Office,Boston,NY,USA,North,2025-05-16 01:17:02.720692
+CUST0080,Edward Williams,edward.williams@example.com,Home Office,Atlanta,TX,USA,South,2024-04-01 01:17:02.720723
+CUST0081,Brandon Nguyen,brandon.nguyen@example.com,Corporate,Houston,TX,USA,South,2024-12-30 01:17:02.720750
+CUST0082,Barbara Collins,barbara.collins@example.com,Home Office,Houston,TX,USA,South,2023-06-19 01:17:02.720774
+CUST0083,Barbara Hill,barbara.hill@example.com,Corporate,Seattle,CA,USA,West,2025-09-01 01:17:02.720792
+CUST0084,Mark Wilson,mark.wilson@example.com,Consumer,New York,NY,USA,North,2023-07-20 01:17:02.720804
+CUST0085,Rebecca Johnson,rebecca.johnson@example.com,Consumer,Baltimore,MD,USA,East,2024-06-19 01:17:02.720819
+CUST0086,Carol Scott,carol.scott@example.com,Consumer,New York,NY,USA,North,2023-06-08 01:17:02.720835
+CUST0087,Melissa Watson,melissa.watson@example.com,Corporate,Houston,TX,USA,South,2025-02-27 01:17:02.720854
+CUST0088,Sandra Roberts,sandra.roberts@example.com,Home Office,Miami,TX,USA,South,2024-05-07 01:17:02.720880
+CUST0089,Carol Barnes,carol.barnes@example.com,Consumer,Baltimore,MD,USA,East,2024-04-25 01:17:02.720901
+CUST0090,Anthony Thomas,anthony.thomas@example.com,Home Office,Philadelphia,MD,USA,East,2024-12-09 01:17:02.720920
+CUST0091,Shirley Ramirez,shirley.ramirez@example.com,Consumer,Baltimore,MD,USA,East,2024-05-20 01:17:02.720942
+CUST0092,Paul Taylor,paul.taylor@example.com,Consumer,New York,NY,USA,North,2023-12-06 01:17:02.720962
+CUST0093,Pamela Watson,pamela.watson@example.com,Home Office,Boston,NY,USA,North,2024-03-22 01:17:02.720988
+CUST0094,Andrew Sanders,andrew.sanders@example.com,Corporate,Houston,TX,USA,South,2023-12-17 01:17:02.721009
+CUST0095,Laura Roberts,laura.roberts@example.com,Home Office,Houston,TX,USA,South,2023-09-08 01:17:02.721035
+CUST0096,Helen Kelly,helen.kelly@example.com,Corporate,Washington DC,MD,USA,East,2025-06-17 01:17:02.721063
+CUST0097,Linda Hernandez,linda.hernandez@example.com,Consumer,Houston,TX,USA,South,2025-10-30 01:17:02.721155
+CUST0098,Michelle Clark,michelle.clark@example.com,Home Office,Chicago,NY,USA,North,2025-10-02 01:17:02.721179
+CUST0099,Brenda Allen,brenda.allen@example.com,Consumer,Washington DC,MD,USA,East,2025-03-28 01:17:02.721194
+CUST0100,Amy Torres,amy.torres@example.com,Home Office,Los Angeles,CA,USA,West,2023-07-14 01:17:02.721228
