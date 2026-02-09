@@ -1,26 +1,6 @@
-Sales Data Warehouse (SalesDWH)
-Overview
+# Sales Data Warehouse (SALESDWH)
 
-SalesDWH is a structured Sales Data Warehouse project designed to store, clean, and analyze sales data for business intelligence and reporting purposes. The project follows standard data warehousing principles and is suitable for analytics, dashboards, and decision-making use cases.
+The Sales Data Warehouse (SALESDWH) project is a modular ETL pipeline designed to extract, transform, and load raw sales data into a structured, analytics-ready data warehouse. Built with a clean separation of concerns, it includes components for data extraction, cleaning, transformation, and orchestration, following a star schema design with fact and dimension tables. The system enables efficient business intelligence, reporting, and data analysis by converting disparate sales data into a unified, query-optimized repository. With support for configuration management, testing, and environment isolation, it provides a scalable and maintainable solution for sales analytics and data-driven decision-making.
 
-This repository demonstrates practical skills in SQL, data modeling, and analytics-oriented system design, which are directly relevant to Business Analyst, Data Analyst, and Consulting roles.
+## 📁 Project Structure
 
-Objectives
-
-Centralize sales data from multiple sources
-
-Enable fast and reliable analytical queries
-
-Support KPIs such as revenue, growth, and performance trends
-
-Build a foundation for BI tools and reporting
-
-Tech Stack
-
-Database: MySQL
-
-Language: SQL , Python
-
-Modeling: Star Schema
-
-Tools: VS Code, Git, GitHub
