@@ -22,19 +22,26 @@ class DimensionBuilder:
             logger.error("Sales data must have 'sale_date' column")
             return None
         
-        # Extract unique dates from sales data
+        # Convert to datetime
         sales_df['sale_date'] = pd.to_datetime(sales_df['sale_date'])
-        unique_dates = sales_df['sale_date'].dt.date.unique()
         
-        # Create date range (ensure we have all dates, not just sales dates)
-        min_date = min(unique_dates)
-        max_date = max(unique_dates)
+        # Get min and max dates from sales
+        min_date = sales_df['sale_date'].min().date()
+        max_date = sales_df['sale_date'].max().date()
+        
+        logger.info(f"Sales data date range: {min_date} to {max_date}")
+        
+        # Create full date range with padding to ensure all dates are covered
+        # Add 30 days padding at both ends to be safe
+        start_date = min_date - timedelta(days=30)
+        end_date = max_date + timedelta(days=30)
         
         # Create full date range
-        date_range = pd.date_range(start=min_date, end=max_date, freq='D')
+        date_range = pd.date_range(start=start_date, end=end_date, freq='D')
         
+        # Create date dimension with YYYYMMDD as key
         date_dim = pd.DataFrame({
-            'full_date': date_range,
+            'full_date': date_range.date,
             'date_key': date_range.strftime('%Y%m%d').astype(int),
             'year': date_range.year,
             'quarter': date_range.quarter,
@@ -51,7 +58,19 @@ class DimensionBuilder:
         # Sort by date
         date_dim = date_dim.sort_values('full_date').reset_index(drop=True)
         
-        logger.info(f"✅ Date dimension created: {len(date_dim)} dates ({min_date} to {max_date})")
+        logger.info(f"✅ Date dimension created: {len(date_dim)} dates")
+        logger.info(f"   Range: {date_dim['full_date'].min()} to {date_dim['full_date'].max()}")
+        logger.info(f"   Date keys: {date_dim['date_key'].min()} to {date_dim['date_key'].max()}")
+        
+        # Validate that all sales dates are covered
+        sales_dates = set(sales_df['sale_date'].dt.date.unique())
+        dim_dates = set(date_dim['full_date'])
+        
+        missing_dates = sales_dates - dim_dates
+        if missing_dates:
+            logger.warning(f"⚠️  Missing {len(missing_dates)} dates in dimension: {sorted(missing_dates)[:5]}")
+        else:
+            logger.info(f"✅ All {len(sales_dates)} sales dates are covered in date dimension")
         
         self.dimensions['dim_date'] = date_dim
         return date_dim
@@ -81,11 +100,24 @@ class DimensionBuilder:
         if 'loyalty_tier' not in customer_dim.columns:
             customer_dim['loyalty_tier'] = 'Standard'
         
-        # Add surrogate key (auto-increment will be handled by database)
-        # For pandas, we'll create a sequential key
+        if 'city' not in customer_dim.columns:
+            customer_dim['city'] = 'Unknown'
+        
+        if 'state' not in customer_dim.columns:
+            customer_dim['state'] = 'Unknown'
+        
+        if 'country' not in customer_dim.columns:
+            customer_dim['country'] = 'Unknown'
+        
+        # Ensure customer_id is string for consistent joining
+        customer_dim['customer_id'] = customer_dim['customer_id'].astype(str)
+        
+        # Add surrogate key (will be replaced by database auto-increment)
+        # But we keep the original ID for mapping
         customer_dim = customer_dim.reset_index(drop=True)
         
         logger.info(f"✅ Customer dimension created: {len(customer_dim)} customers")
+        logger.info(f"   Customer IDs: {customer_dim['customer_id'].iloc[0]} to {customer_dim['customer_id'].iloc[-1]}")
         
         self.dimensions['dim_customer'] = customer_dim
         return customer_dim
@@ -123,16 +155,23 @@ class DimensionBuilder:
                 else:
                     product_dim[col] = default_value
         
+        # Ensure product_id is string for consistent joining
+        product_dim['product_id'] = product_dim['product_id'].astype(str)
+        
         # Calculate profit margin if we have both prices
         if 'cost_price' in product_dim.columns and 'selling_price' in product_dim.columns:
-            product_dim['profit_margin'] = (
-                (product_dim['selling_price'] - product_dim['cost_price']) / 
-                product_dim['selling_price'] * 100
+            # Avoid division by zero
+            mask = product_dim['selling_price'] > 0
+            product_dim.loc[mask, 'profit_margin'] = (
+                (product_dim.loc[mask, 'selling_price'] - product_dim.loc[mask, 'cost_price']) / 
+                product_dim.loc[mask, 'selling_price'] * 100
             ).round(2)
+            product_dim.loc[~mask, 'profit_margin'] = 0
         else:
             product_dim['profit_margin'] = 30.0  # Default
         
         logger.info(f"✅ Product dimension created: {len(product_dim)} products")
+        logger.info(f"   Product IDs: {product_dim['product_id'].iloc[0]} to {product_dim['product_id'].iloc[-1]}")
         
         self.dimensions['dim_product'] = product_dim
         return product_dim
@@ -143,13 +182,21 @@ class DimensionBuilder:
         
         try:
             cursor = db_connection.cursor(dictionary=True)
-            cursor.execute("SELECT salesperson_id, salesperson_name, region FROM dim_salesperson")
+            cursor.execute("SELECT salesperson_key, employee_id, first_name, last_name, email, region FROM dim_salesperson")
             salespersons = cursor.fetchall()
             cursor.close()
             
             if salespersons:
                 salesperson_df = pd.DataFrame(salespersons)
+                
+                # Create full name if needed
+                if 'first_name' in salesperson_df.columns and 'last_name' in salesperson_df.columns:
+                    salesperson_df['salesperson_name'] = salesperson_df['first_name'] + ' ' + salesperson_df['last_name']
+                elif 'salesperson_name' not in salesperson_df.columns:
+                    salesperson_df['salesperson_name'] = 'Unknown'
+                
                 logger.info(f"✅ Found {len(salesperson_df)} salespersons in database")
+                logger.info(f"   Salesperson keys: {salesperson_df['salesperson_key'].tolist()}")
                 return salesperson_df
             else:
                 logger.warning("No salespersons found in database, creating defaults")
@@ -162,22 +209,27 @@ class DimensionBuilder:
     def _create_default_salespersons(self):
         """Create default salesperson dimension"""
         default_salespersons = [
-            {'salesperson_id': 'SP001', 'salesperson_name': 'John Smith', 'region': 'North'},
-            {'salesperson_id': 'SP002', 'salesperson_name': 'Sarah Johnson', 'region': 'South'},
-            {'salesperson_id': 'SP003', 'salesperson_name': 'Mike Brown', 'region': 'East'},
-            {'salesperson_id': 'SP004', 'salesperson_name': 'Lisa Davis', 'region': 'West'},
+            {'employee_id': 'EMP001', 'first_name': 'John', 'last_name': 'Smith', 'region': 'North', 'email': 'john.smith@company.com'},
+            {'employee_id': 'EMP002', 'first_name': 'Sarah', 'last_name': 'Johnson', 'region': 'South', 'email': 'sarah.johnson@company.com'},
+            {'employee_id': 'EMP003', 'first_name': 'Mike', 'last_name': 'Brown', 'region': 'East', 'email': 'mike.brown@company.com'},
+            {'employee_id': 'EMP004', 'first_name': 'Lisa', 'last_name': 'Davis', 'region': 'West', 'email': 'lisa.davis@company.com'},
         ]
         
         salesperson_df = pd.DataFrame(default_salespersons)
         
+        # Add salesperson_name
+        salesperson_df['salesperson_name'] = salesperson_df['first_name'] + ' ' + salesperson_df['last_name']
+        
         # Add additional columns
-        salesperson_df['email'] = salesperson_df['salesperson_name'].str.replace(' ', '.').str.lower() + '@company.com'
         salesperson_df['territory'] = salesperson_df['region']
         salesperson_df['manager_id'] = 'MGR001'
         salesperson_df['hire_date'] = pd.Timestamp('2022-01-01')
         salesperson_df['commission_rate'] = 0.10
         
-        logger.info("✅ Created default salesperson dimension")
+        # Add surrogate key (will be assigned by database)
+        salesperson_df['salesperson_key'] = range(1, len(salesperson_df) + 1)
+        
+        logger.info(f"✅ Created default salesperson dimension with {len(salesperson_df)} salespersons")
         
         self.dimensions['dim_salesperson'] = salesperson_df
         return salesperson_df
@@ -195,9 +247,72 @@ class DimensionBuilder:
         for dim_name, df in self.dimensions.items():
             filename = f"{output_dir}/{dim_name}.csv"
             df.to_csv(filename, index=False)
-            logger.info(f"✅ Saved {dim_name} to {filename}")
+            logger.info(f"✅ Saved {dim_name} to {filename} ({len(df)} rows)")
         
         return True
+    
+    def validate_dimensions(self, sales_df):
+        """Validate that dimensions properly cover sales data"""
+        logger.info("Validating dimensions against sales data...")
+        
+        validation_results = {}
+        
+        # Check date dimension
+        if 'dim_date' in self.dimensions:
+            date_dim = self.dimensions['dim_date']
+            sales_dates = set(pd.to_datetime(sales_df['sale_date']).dt.date.unique())
+            dim_dates = set(date_dim['full_date'])
+            
+            missing_dates = sales_dates - dim_dates
+            validation_results['date_coverage'] = {
+                'total_sales_dates': len(sales_dates),
+                'covered_dates': len(sales_dates - missing_dates),
+                'missing_dates': len(missing_dates),
+                'missing_dates_list': sorted(missing_dates)[:10] if missing_dates else []
+            }
+            
+            if missing_dates:
+                logger.warning(f"⚠️  Date dimension missing {len(missing_dates)} dates")
+            else:
+                logger.info("✅ Date dimension covers all sales dates")
+        
+        # Check customer dimension
+        if 'dim_customer' in self.dimensions:
+            customer_dim = self.dimensions['dim_customer']
+            sales_customers = set(sales_df['customer_id'].astype(str).unique())
+            dim_customers = set(customer_dim['customer_id'].astype(str).unique())
+            
+            missing_customers = sales_customers - dim_customers
+            validation_results['customer_coverage'] = {
+                'total_sales_customers': len(sales_customers),
+                'covered_customers': len(sales_customers - missing_customers),
+                'missing_customers': len(missing_customers)
+            }
+            
+            if missing_customers:
+                logger.warning(f"⚠️  Customer dimension missing {len(missing_customers)} customers")
+            else:
+                logger.info("✅ Customer dimension covers all sales customers")
+        
+        # Check product dimension
+        if 'dim_product' in self.dimensions:
+            product_dim = self.dimensions['dim_product']
+            sales_products = set(sales_df['product_id'].astype(str).unique())
+            dim_products = set(product_dim['product_id'].astype(str).unique())
+            
+            missing_products = sales_products - dim_products
+            validation_results['product_coverage'] = {
+                'total_sales_products': len(sales_products),
+                'covered_products': len(sales_products - missing_products),
+                'missing_products': len(missing_products)
+            }
+            
+            if missing_products:
+                logger.warning(f"⚠️  Product dimension missing {len(missing_products)} products")
+            else:
+                logger.info("✅ Product dimension covers all sales products")
+        
+        return validation_results
 
 # Test function
 def test_dimension_builder():
@@ -214,12 +329,18 @@ def test_dimension_builder():
     sample_customers = pd.DataFrame({
         'customer_id': ['CUST001', 'CUST002'],
         'customer_name': ['John Doe', 'Jane Smith'],
-        'email': ['john@example.com', 'jane@example.com']
+        'email': ['john@example.com', 'jane@example.com'],
+        'city': ['New York', 'Los Angeles'],
+        'state': ['NY', 'CA'],
+        'country': ['USA', 'USA'],
+        'region': ['North', 'West']
     })
     
     sample_products = pd.DataFrame({
         'product_id': ['P001', 'P002'],
         'product_name': ['Laptop', 'Mouse'],
+        'category': ['Electronics', 'Accessories'],
+        'sub_category': ['Computers', 'Peripherals'],
         'base_price': [1000, 50]
     })
     
@@ -231,8 +352,16 @@ def test_dimension_builder():
     product_dim = builder.build_product_dimension(sample_products)
     
     print(f"Date dimension: {len(date_dim)} rows")
+    print(f"  Range: {date_dim['full_date'].min()} to {date_dim['full_date'].max()}")
     print(f"Customer dimension: {len(customer_dim)} rows")
     print(f"Product dimension: {len(product_dim)} rows")
+    
+    # Validate
+    validation = builder.validate_dimensions(sample_sales)
+    print("\nValidation Results:")
+    for dim, results in validation.items():
+        print(f"  {dim}: {results}")
+    
     print("✅ Test completed")
 
 if __name__ == "__main__":

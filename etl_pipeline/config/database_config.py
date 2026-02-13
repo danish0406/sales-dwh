@@ -15,7 +15,7 @@ def get_simple_connection():
     try:
         connection = mysql.connector.connect(
             host=os.getenv('DB_HOST', 'localhost'),
-            port=int(os.getenv('DB_PORT', 3306)),
+            port=int(os.getenv('DB_PORT', '3306')),
             user=os.getenv('DB_USER', 'root'),
             password=os.getenv('DB_PASSWORD', 'danish@sql12345'),
             database=os.getenv('DB_NAME', 'sales_dwh'),

@@ -1,380 +1,439 @@
 """
-Simplified ETL Pipeline - Fixes foreign key issues
+MySQL Loader Module - Handles loading data into MySQL database
 """
-import pandas as pd
 import mysql.connector
 from mysql.connector import Error
-from dotenv import load_dotenv
-import os
-from datetime import datetime
+import pandas as pd  # <-- ADD THIS IMPORT
 import logging
+from datetime import datetime
 
 # Setup logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
 logger = logging.getLogger(__name__)
 
-# Load environment variables
-load_dotenv()
-
-def get_db_connection():
-    """Get MySQL connection"""
-    try:
-        conn = mysql.connector.connect(
-            host=os.getenv('DB_HOST', 'localhost'),
-            port=int(os.getenv('DB_PORT', 3306)),
-            user=os.getenv('DB_USER', 'root'),
-            password=os.getenv('DB_PASSWORD', ''),
-            database=os.getenv('DB_NAME', 'sales_dwh'),
-            autocommit=True
-        )
-        return conn
-    except Error as e:
-        logger.error(f"Database connection error: {e}")
-        return None
-
-def clear_all_tables():
-    """Clear all tables in correct order"""
-    logger.info("Clearing all tables...")
+class MySQLLoader:
+    """MySQL Loader class for ETL pipeline"""
     
-    conn = get_db_connection()
-    if not conn:
-        return False
+    def __init__(self):
+        """Initialize the MySQL loader"""
+        self.logger = logging.getLogger(__name__)
+        self.connection = None
+        self.cursor = None
+        self._connect()
     
-    cursor = conn.cursor()
+    def _connect(self):
+        """Establish database connection"""
+        try:
+            from etl_pipeline.config.database_config import get_simple_connection
+            self.connection = get_simple_connection()
+            if self.connection:
+                self.cursor = self.connection.cursor(dictionary=True)
+                self.logger.info("✅ MySQL connection established")
+            else:
+                self.logger.error("❌ Failed to connect to MySQL")
+        except Exception as e:
+            self.logger.error(f"❌ Connection error: {e}")
     
-    try:
-        # Disable foreign key checks
-        cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
+    def clear_all_tables_safely(self):
+        """Clear all tables in correct order - handles foreign keys"""
+        self.logger.info("Clearing all tables safely...")
         
-        # Clear in correct order
-        tables = ['fact_sales', 'staging_sales', 'dim_date', 'dim_customer', 'dim_product', 'dim_salesperson']
-        
-        for table in tables:
-            try:
-                cursor.execute(f"DELETE FROM {table}")
-                cursor.execute(f"ALTER TABLE {table} AUTO_INCREMENT = 1")
-                logger.info(f"  Cleared {table}")
-            except Exception as e:
-                logger.warning(f"  Could not clear {table}: {e}")
-        
-        # Re-enable foreign key checks
-        cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
-        conn.commit()
-        
-        logger.info("✅ All tables cleared")
-        return True
-        
-    except Exception as e:
-        logger.error(f"Error clearing tables: {e}")
-        conn.rollback()
-        return False
-    finally:
-        cursor.close()
-        conn.close()
-
-def load_dimension_from_csv(csv_file, table_name, id_column):
-    """
-    Load dimension table from CSV, letting MySQL auto-assign keys
-    Returns: Dictionary mapping original IDs to database keys
-    """
-    logger.info(f"Loading {table_name} from {csv_file}...")
-    
-    # Read CSV
-    df = pd.read_csv(csv_file)
-    
-    conn = get_db_connection()
-    if not conn:
-        return None
-    
-    cursor = conn.cursor()
-    
-    try:
-        # Get column names from the table (excluding auto-increment key)
-        cursor.execute(f"DESCRIBE {table_name}")
-        table_info = cursor.fetchall()
-        
-        # Get data columns (not ending with '_key')
-        data_columns = [col[0] for col in table_info if not col[0].endswith('_key')]
-        
-        # Prepare insert statement
-        placeholders = ', '.join(['%s'] * len(data_columns))
-        columns = ', '.join(data_columns)
-        insert_query = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
-        
-        # Prepare data
-        data_to_insert = []
-        for _, row in df.iterrows():
-            row_data = []
-            for col in data_columns:
-                if col in df.columns:
-                    val = row[col]
-                    row_data.append(None if pd.isna(val) else val)
-                else:
-                    row_data.append(None)
-            data_to_insert.append(tuple(row_data))
-        
-        # Insert data
-        for row_data in data_to_insert:
-            cursor.execute(insert_query, row_data)
-        
-        conn.commit()
-        
-        # Get the mapping of original IDs to database keys
-        cursor.execute(f"SELECT {id_column}, {table_name.replace('dim_', '')}_key FROM {table_name}")
-        mapping = {row[0]: row[1] for row in cursor.fetchall()}
-        
-        logger.info(f"✅ Loaded {len(df)} rows into {table_name}")
-        return mapping
-        
-    except Exception as e:
-        logger.error(f"Error loading {table_name}: {e}")
-        conn.rollback()
-        return None
-    finally:
-        cursor.close()
-        conn.close()
-
-def create_date_dimension(sales_df):
-    """Create date dimension from sales data"""
-    logger.info("Creating date dimension...")
-    
-    conn = get_db_connection()
-    if not conn:
-        return None
-    
-    cursor = conn.cursor()
-    
-    try:
-        # Extract unique dates from sales
-        sales_df['sale_date'] = pd.to_datetime(sales_df['sale_date'])
-        unique_dates = sales_df['sale_date'].dt.date.unique()
-        
-        # Clear existing dates
-        cursor.execute("DELETE FROM dim_date")
-        cursor.execute("ALTER TABLE dim_date AUTO_INCREMENT = 1")
-        
-        # Insert dates
-        for date_val in sorted(unique_dates):
-            date_obj = pd.Timestamp(date_val)
-            cursor.execute("""
-                INSERT INTO dim_date (full_date, year, quarter, month, month_name, day, day_of_week, is_weekend)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (
-                date_val,
-                date_obj.year,
-                date_obj.quarter,
-                date_obj.month,
-                date_obj.strftime('%B'),
-                date_obj.day,
-                date_obj.strftime('%A'),
-                date_obj.dayofweek >= 5
-            ))
-        
-        conn.commit()
-        
-        # Get date_key mapping
-        cursor.execute("SELECT full_date, date_key FROM dim_date")
-        date_mapping = {str(row[0]): row[1] for row in cursor.fetchall()}
-        
-        logger.info(f"✅ Created date dimension with {len(unique_dates)} dates")
-        return date_mapping
-        
-    except Exception as e:
-        logger.error(f"Error creating date dimension: {e}")
-        conn.rollback()
-        return None
-    finally:
-        cursor.close()
-        conn.close()
-
-def load_fact_table(sales_df, date_mapping, customer_mapping, product_mapping):
-    """Load fact table with proper foreign keys"""
-    logger.info(f"Loading fact table with {len(sales_df)} rows...")
-    
-    conn = get_db_connection()
-    if not conn:
-        return False
-    
-    cursor = conn.cursor()
-    
-    try:
-        # Clear fact table
-        cursor.execute("DELETE FROM fact_sales")
-        cursor.execute("ALTER TABLE fact_sales AUTO_INCREMENT = 1")
-        
-        # Prepare insert statement
-        insert_query = """
-            INSERT INTO fact_sales 
-            (date_key, product_key, customer_key, salesperson_key, 
-             quantity, unit_price, discount, total_amount, profit, 
-             payment_method, shipping_mode)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """
-        
-        # Process sales data
-        batch_size = 100
-        batch = []
-        
-        for _, row in sales_df.iterrows():
-            try:
-                # Convert sale_date to string for mapping
-                sale_date = pd.to_datetime(row['sale_date']).date()
-                date_str = str(sale_date)
-                
-                # Get foreign keys from mappings
-                date_key = date_mapping.get(date_str)
-                customer_key = customer_mapping.get(row['customer_id'])
-                product_key = product_mapping.get(row['product_id'])
-                
-                # Skip if any foreign key is missing
-                if not all([date_key, customer_key, product_key]):
-                    logger.warning(f"Skipping sale {row.get('sale_id', 'unknown')}: missing foreign keys")
-                    continue
-                
-                # Default salesperson (simplified)
-                salesperson_key = 1
-                
-                # Calculate profit (simplified: 20% of total)
-                profit = row['total_amount'] * 0.2
-                
-                batch.append((
-                    date_key, product_key, customer_key, salesperson_key,
-                    row['quantity'], row['unit_price'], row.get('discount', 0),
-                    row['total_amount'], profit,
-                    row.get('payment_method', 'Credit Card'),
-                    row.get('shipping_mode', 'Standard')
-                ))
-                
-                # Insert in batches
-                if len(batch) >= batch_size:
-                    cursor.executemany(insert_query, batch)
-                    batch = []
-                    
-            except Exception as e:
-                logger.warning(f"Error processing sale: {e}")
-                continue
-        
-        # Insert remaining rows
-        if batch:
-            cursor.executemany(insert_query, batch)
-        
-        conn.commit()
-        
-        # Get count
-        cursor.execute("SELECT COUNT(*) FROM fact_sales")
-        count = cursor.fetchone()[0]
-        
-        logger.info(f"✅ Loaded {count} rows into fact_sales")
-        return True
-        
-    except Exception as e:
-        logger.error(f"Error loading fact table: {e}")
-        conn.rollback()
-        return False
-    finally:
-        cursor.close()
-        conn.close()
-
-def run_simple_etl():
-    """Run simplified ETL pipeline"""
-    logger.info("=" * 60)
-    logger.info("🚀 SIMPLIFIED ETL PIPELINE")
-    logger.info("=" * 60)
-    
-    try:
-        # Step 1: Clear all tables
-        if not clear_all_tables():
+        if not self.connection or not self.cursor:
+            self.logger.error("No database connection")
             return False
         
-        # Step 2: Load dimensions and get key mappings
-        logger.info("\n📥 Loading dimensions...")
-        
-        # Load customers
-        customer_mapping = load_dimension_from_csv(
-            'data/raw/customers_raw.csv',
-            'dim_customer',
-            'customer_id'
-        )
-        if not customer_mapping:
-            return False
-        
-        # Load products
-        product_mapping = load_dimension_from_csv(
-            'data/raw/products_raw.csv',
-            'dim_product',
-            'product_id'
-        )
-        if not product_mapping:
-            return False
-        
-        # Step 3: Read sales data
-        logger.info("\n📊 Processing sales data...")
-        sales_df = pd.read_csv('data/raw/sales_raw.csv')
-        
-        # Step 4: Create date dimension from sales dates
-        date_mapping = create_date_dimension(sales_df)
-        if not date_mapping:
-            return False
-        
-        # Step 5: Load fact table with proper mappings
-        logger.info("\n🎯 Loading fact table...")
-        success = load_fact_table(sales_df, date_mapping, customer_mapping, product_mapping)
-        
-        if success:
-            logger.info("\n" + "=" * 60)
-            logger.info("🎉 SIMPLIFIED ETL COMPLETED SUCCESSFULLY!")
-            logger.info("=" * 60)
+        try:
+            # Disable foreign key checks
+            self.cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
             
-            # Show summary
-            conn = get_db_connection()
-            cursor = conn.cursor(dictionary=True)
+            # Get all tables
+            self.cursor.execute("SHOW TABLES")
+            tables_result = self.cursor.fetchall()
+            tables = [list(table.values())[0] for table in tables_result]
             
-            cursor.execute("SELECT 'dim_date' as table, COUNT(*) as count FROM dim_date")
-            cursor.execute("SELECT 'dim_customer' as table, COUNT(*) as count FROM dim_customer")
-            cursor.execute("SELECT 'dim_product' as table, COUNT(*) as count FROM dim_product")
-            cursor.execute("SELECT 'fact_sales' as table, COUNT(*) as count FROM fact_sales")
+            # Define clear order (child tables first, then parent tables)
+            # Fact tables first, then dimensions
+            clear_order = ['fact_sales', 'dim_date', 'dim_customer', 'dim_product', 'dim_salesperson']
             
-            tables = ['dim_date', 'dim_customer', 'dim_product', 'fact_sales']
+            for table in clear_order:
+                if table in tables:
+                    try:
+                        # Try TRUNCATE first (faster)
+                        self.cursor.execute(f"TRUNCATE TABLE {table}")
+                        self.logger.info(f"  ✓ Truncated {table}")
+                    except:
+                        # Fall back to DELETE if TRUNCATE fails
+                        try:
+                            self.cursor.execute(f"DELETE FROM {table}")
+                            self.cursor.execute(f"ALTER TABLE {table} AUTO_INCREMENT = 1")
+                            self.logger.info(f"  ✓ Deleted from {table}")
+                        except Exception as e:
+                            self.logger.warning(f"  Could not clear {table}: {e}")
+            
+            # Also clear any other tables that might exist
             for table in tables:
-                cursor.execute(f"SELECT COUNT(*) as count FROM {table}")
-                result = cursor.fetchone()
-                logger.info(f"  {table:15}: {result['count']:6} rows")
+                if table not in clear_order:
+                    try:
+                        self.cursor.execute(f"DELETE FROM {table}")
+                        self.logger.info(f"  ✓ Cleared additional table: {table}")
+                    except:
+                        pass
             
-            cursor.close()
-            conn.close()
+            # Re-enable foreign key checks
+            self.cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
+            self.connection.commit()
+            
+            self.logger.info("✅ All tables cleared successfully")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Error clearing tables: {e}")
+            self.connection.rollback()
+            return False
+    
+    def load_dimension_table(self, df, table_name, truncate_first=False):
+        """Load a dimension table"""
+        self.logger.info(f"Loading {table_name} with {len(df)} rows...")
+        
+        if not self.connection or not self.cursor:
+            self.logger.error("No database connection")
+            return False
+        
+        try:
+            # Truncate if requested
+            if truncate_first:
+                self.cursor.execute(f"DELETE FROM {table_name}")
+                self.cursor.execute(f"ALTER TABLE {table_name} AUTO_INCREMENT = 1")
+                self.connection.commit()
+            
+            # Get table structure
+            self.cursor.execute(f"DESCRIBE {table_name}")
+            columns_result = self.cursor.fetchall()
+            columns = [col['Field'] for col in columns_result 
+                      if not col['Field'].endswith('_key') or col['Field'] == 'employee_id' or col['Field'] == 'customer_id' or col['Field'] == 'product_id']
+            
+            # Filter dataframe columns that exist in table
+            df_columns = [col for col in df.columns if col in columns]
+            
+            if not df_columns:
+                self.logger.warning(f"No matching columns found for {table_name}")
+                return False
+            
+            # Prepare insert statement
+            placeholders = ', '.join(['%s'] * len(df_columns))
+            column_str = ', '.join(df_columns)
+            insert_query = f"INSERT INTO {table_name} ({column_str}) VALUES ({placeholders})"
+            
+            # Insert data in batches
+            batch_size = 100
+            total_inserted = 0
+            
+            for i in range(0, len(df), batch_size):
+                batch = df.iloc[i:i+batch_size]
+                batch_values = []
+                
+                for _, row in batch.iterrows():
+                    values = []
+                    for col in df_columns:
+                        val = row[col]
+                        if pd.isna(val):
+                            values.append(None)
+                        elif isinstance(val, (int, float)):
+                            values.append(val)
+                        else:
+                            values.append(str(val))
+                    batch_values.append(tuple(values))
+                
+                self.cursor.executemany(insert_query, batch_values)
+                self.connection.commit()
+                total_inserted += len(batch)
+                self.logger.info(f"  Loaded batch {i//batch_size + 1} ({total_inserted} rows)")
+            
+            self.logger.info(f"✅ Successfully loaded {total_inserted} rows into {table_name}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Error loading {table_name}: {e}")
+            self.connection.rollback()
+            return False
+    
+    def load_fact_table(self, df, table_name, truncate_first=False):
+        """Load fact table with proper foreign key validation"""
+        self.logger.info(f"Loading {table_name} with {len(df)} rows...")
+        
+        # DEBUG: Print ALL columns in the dataframe
+        self.logger.info(f"DataFrame columns: {list(df.columns)}")
+        
+        # Define expected columns for fact_sales table
+        expected_columns = [
+            'date_key', 'product_key', 'customer_key', 'salesperson_key',
+            'quantity', 'unit_price', 'discount', 'total_amount', 'profit',
+            'payment_method', 'shipping_mode'
+        ]
+        
+        # Check for any unexpected columns and drop them
+        unexpected = [col for col in df.columns if col not in expected_columns]
+        if unexpected:
+            self.logger.warning(f"⚠️ Unexpected columns in fact table: {unexpected}")
+            # Keep only expected columns that exist
+            cols_to_keep = [col for col in expected_columns if col in df.columns]
+            df = df[cols_to_keep].copy()
+            self.logger.info(f"✅ After cleanup, columns: {list(df.columns)}")
+        
+        if not self.connection or not self.cursor:
+            self.logger.error("No database connection")
+            return False
+        
+        try:
+            # Truncate if requested
+            if truncate_first:
+                self.cursor.execute(f"DELETE FROM {table_name}")
+                self.cursor.execute(f"ALTER TABLE {table_name} AUTO_INCREMENT = 1")
+                self.connection.commit()
+            
+            # First, get all valid dimension keys from the database
+            valid_keys = {}
+            
+            # Get valid date keys
+            self.cursor.execute("SELECT date_key, full_date FROM dim_date")
+            date_keys = self.cursor.fetchall()
+            valid_dates = {}
+            for row in date_keys:
+                date_val = row['full_date']
+                if hasattr(date_val, 'strftime'):
+                    date_str = date_val.strftime('%Y-%m-%d')
+                else:
+                    date_str = str(date_val)
+                valid_dates[date_str] = row['date_key']
+            self.logger.info(f"Found {len(valid_dates)} valid date keys")
+            
+            # Get valid product keys
+            self.cursor.execute("SELECT product_key, product_id FROM dim_product")
+            product_rows = self.cursor.fetchall()
+            product_keys = {}
+            for row in product_rows:
+                product_keys[str(row['product_id'])] = row['product_key']
+            self.logger.info(f"Found {len(product_keys)} valid product keys")
+            
+            # Get valid customer keys
+            self.cursor.execute("SELECT customer_key, customer_id FROM dim_customer")
+            customer_rows = self.cursor.fetchall()
+            customer_keys = {}
+            for row in customer_rows:
+                customer_keys[str(row['customer_id'])] = row['customer_key']
+            self.logger.info(f"Found {len(customer_keys)} valid customer keys")
+            
+            # Get valid salesperson keys
+            self.cursor.execute("SELECT salesperson_key FROM dim_salesperson")
+            salesperson_rows = self.cursor.fetchall()
+            valid_salesperson_keys = [row['salesperson_key'] for row in salesperson_rows]
+            self.logger.info(f"Found {len(valid_salesperson_keys)} valid salesperson keys")
+            
+            # Prepare data with validated foreign keys
+            validated_rows = []
+            skipped_rows = 0
+            missing_keys = {'date': 0, 'product': 0, 'customer': 0, 'salesperson': 0}
+            
+            for idx, row in df.iterrows():
+                try:
+                    # Handle date_key - might be in different formats
+                    date_key = row.get('date_key')
+                    
+                    if pd.isna(date_key):
+                        self.logger.warning(f"Row {idx}: No date_key found")
+                        skipped_rows += 1
+                        missing_keys['date'] += 1
+                        continue
+                    
+                    # Handle product_key
+                    product_key = row.get('product_key')
+                    
+                    if pd.isna(product_key) or product_key not in product_keys.values():
+                        self.logger.warning(f"Row {idx}: Invalid product_key {product_key}")
+                        skipped_rows += 1
+                        missing_keys['product'] += 1
+                        continue
+                    
+                    # Handle customer_key
+                    customer_key = row.get('customer_key')
+                    
+                    if pd.isna(customer_key) or customer_key not in customer_keys.values():
+                        self.logger.warning(f"Row {idx}: Invalid customer_key {customer_key}")
+                        skipped_rows += 1
+                        missing_keys['customer'] += 1
+                        continue
+                    
+                    # Handle salesperson_key
+                    salesperson_key = row.get('salesperson_key', 1)
+                    
+                    if pd.isna(salesperson_key) or salesperson_key not in valid_salesperson_keys:
+                        self.logger.warning(f"Row {idx}: Invalid salesperson_key {salesperson_key}, using 1")
+                        salesperson_key = 1
+                    
+                    # Build the row with proper keys
+                    validated_row = {
+                        'date_key': int(date_key),
+                        'product_key': int(product_key),
+                        'customer_key': int(customer_key),
+                        'salesperson_key': int(salesperson_key),
+                        'quantity': float(row.get('quantity', 0)),
+                        'unit_price': float(row.get('unit_price', 0)),
+                        'discount': float(row.get('discount', 0)),
+                        'total_amount': float(row.get('total_amount', 0)),
+                        'profit': float(row.get('profit', 0))
+                    }
+                    
+                    # Add any additional columns that might exist
+                    for col in ['payment_method', 'shipping_mode']:
+                        if col in row and pd.notna(row[col]):
+                            validated_row[col] = str(row[col])
+                        else:
+                            # Set defaults
+                            if col == 'payment_method':
+                                validated_row[col] = 'Credit Card'
+                            elif col == 'shipping_mode':
+                                validated_row[col] = 'Standard'
+                    
+                    validated_rows.append(validated_row)
+                    
+                except Exception as e:
+                    self.logger.warning(f"Error processing row {idx}: {e}")
+                    skipped_rows += 1
+                    continue
+            
+            self.logger.info(f"Validated {len(validated_rows)} rows, skipped {skipped_rows} rows")
+            self.logger.info(f"Missing keys - Date: {missing_keys['date']}, Product: {missing_keys['product']}, "
+                            f"Customer: {missing_keys['customer']}, Salesperson: {missing_keys['salesperson']}")
+            
+            if not validated_rows:
+                self.logger.error("No valid rows to insert")
+                return False
+            
+            # Get table columns from database
+            self.cursor.execute(f"DESCRIBE {table_name}")
+            table_columns_result = self.cursor.fetchall()
+            table_columns = [col['Field'] for col in table_columns_result]
+            self.logger.info(f"Database table columns: {table_columns}")
+            
+            # Filter validated rows to only include columns that exist in the table
+            columns_to_insert = [col for col in validated_rows[0].keys() if col in table_columns]
+            
+            if not columns_to_insert:
+                self.logger.error("No matching columns found")
+                return False
+            
+            self.logger.info(f"Columns to insert: {columns_to_insert}")
+            
+            # Prepare insert statement
+            placeholders = ', '.join(['%s'] * len(columns_to_insert))
+            column_str = ', '.join(columns_to_insert)
+            insert_query = f"INSERT INTO {table_name} ({column_str}) VALUES ({placeholders})"
+            
+            # Insert in batches
+            batch_size = 100
+            total_inserted = 0
+            
+            for i in range(0, len(validated_rows), batch_size):
+                batch = validated_rows[i:i+batch_size]
+                batch_values = []
+                
+                for row_data in batch:
+                    values = [row_data[col] for col in columns_to_insert]
+                    batch_values.append(tuple(values))
+                
+                try:
+                    self.cursor.executemany(insert_query, batch_values)
+                    self.connection.commit()
+                    total_inserted += len(batch)
+                    self.logger.info(f"  Loaded batch {i//batch_size + 1} ({total_inserted} rows)")
+                except Exception as e:
+                    self.logger.error(f"Error inserting batch: {e}")
+                    # Try one by one to identify problematic rows
+                    for j, values in enumerate(batch_values):
+                        try:
+                            self.cursor.execute(insert_query, values)
+                            self.connection.commit()
+                            total_inserted += 1
+                        except Exception as e2:
+                            self.logger.error(f"Error inserting row {i+j}: {e2}")
+                            self.logger.error(f"  Values: {values}")
+            
+            self.logger.info(f"✅ Successfully loaded {total_inserted} rows into {table_name}")
+            
+            # Final verification
+            self.cursor.execute(f"SELECT COUNT(*) as count FROM {table_name}")
+            final_count = self.cursor.fetchone()['count']
+            self.logger.info(f"Final row count in {table_name}: {final_count}")
             
             return True
-        else:
+            
+        except Exception as e:
+            self.logger.error(f"Error loading {table_name}: {e}")
+            self.connection.rollback()
+            return False
+    
+    def verify_data_load(self):
+        """Verify data was loaded correctly"""
+        self.logger.info("Verifying data load...")
+        
+        if not self.connection or not self.cursor:
+            self.logger.error("No database connection")
             return False
         
-    except Exception as e:
-        logger.error(f"ETL failed: {e}")
-        import traceback
-        logger.error(traceback.format_exc())
-        return False
+        try:
+            tables = ['dim_date', 'dim_customer', 'dim_product', 'dim_salesperson', 'fact_sales']
+            all_good = True
+            results = {}
+            
+            for table in tables:
+                self.cursor.execute(f"SELECT COUNT(*) as count FROM {table}")
+                result = self.cursor.fetchone()
+                count = result['count'] if result else 0
+                results[table] = count
+                
+                if count > 0:
+                    self.logger.info(f"  ✓ {table}: {count} rows")
+                else:
+                    self.logger.warning(f"  ⚠ {table}: EMPTY")
+                    all_good = False
+            
+            # Additional verification for fact table
+            if results.get('fact_sales', 0) > 0:
+                self.cursor.execute("""
+                    SELECT 
+                        COUNT(*) as total,
+                        COUNT(DISTINCT date_key) as unique_dates,
+                        COUNT(DISTINCT product_key) as unique_products,
+                        COUNT(DISTINCT customer_key) as unique_customers,
+                        SUM(total_amount) as total_revenue,
+                        SUM(profit) as total_profit
+                    FROM fact_sales
+                """)
+                fact_stats = self.cursor.fetchone()
+                self.logger.info(f"  Fact table stats:")
+                self.logger.info(f"    • Unique dates: {fact_stats['unique_dates']}")
+                self.logger.info(f"    • Unique products: {fact_stats['unique_products']}")
+                self.logger.info(f"    • Unique customers: {fact_stats['unique_customers']}")
+                self.logger.info(f"    • Total revenue: ${fact_stats['total_revenue']:,.2f}")
+                self.logger.info(f"    • Total profit: ${fact_stats['total_profit']:,.2f}")
+            
+            return all_good
+            
+        except Exception as e:
+            self.logger.error(f"Error verifying data: {e}")
+            return False
     
-
-class MySQLLoader:
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
+    def close_connection(self):
+        """Close database connection"""
+        try:
+            if self.cursor:
+                self.cursor.close()
+            if self.connection:
+                self.connection.close()
+            self.logger.info("✅ Database connection closed")
+        except Exception as e:
+            self.logger.error(f"Error closing connection: {e}")
     
     def run_etl(self):
-        """Run the ETL pipeline"""
-        return run_simple_etl()    
-
-if __name__ == "__main__":
-    success = run_simple_etl()
-    
-    print("\n" + "=" * 60)
-    if success:
-        print("✅ ETL COMPLETED!")
-        print("\n📊 Check your data in MySQL:")
-        print("   mysql -u root -p -e \"USE sales_dwh; SELECT * FROM fact_sales LIMIT 5;\"")
-    else:
-        print("❌ ETL FAILED")
-        print("Check the error messages above.")
-    
-    exit(0 if success else 1)
+        """Run the ETL pipeline - kept for backward compatibility"""
+        self.logger.info("Use ETLOrchestrator.run_etl_pipeline() instead")
+        return False

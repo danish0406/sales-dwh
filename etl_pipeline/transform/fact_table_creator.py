@@ -52,9 +52,12 @@ class FactTableCreator:
         if 'dim_product' in dimensions:
             product_dim = dimensions['dim_product'].copy()
             
+            # Make sure we have product_key column
+            if 'product_key' not in product_dim.columns:
+                product_dim['product_key'] = range(1, len(product_dim) + 1)
+            
             fact_df = fact_df.merge(
-                product_dim[['product_id', 'product_key']] if 'product_key' in product_dim.columns 
-                else product_dim[['product_id']].assign(product_key=range(1, len(product_dim) + 1)),
+                product_dim[['product_id', 'product_key']],
                 on='product_id',
                 how='left'
             )
@@ -69,9 +72,12 @@ class FactTableCreator:
         if 'dim_customer' in dimensions:
             customer_dim = dimensions['dim_customer'].copy()
             
+            # Make sure we have customer_key column
+            if 'customer_key' not in customer_dim.columns:
+                customer_dim['customer_key'] = range(1, len(customer_dim) + 1)
+            
             fact_df = fact_df.merge(
-                customer_dim[['customer_id', 'customer_key']] if 'customer_key' in customer_dim.columns
-                else customer_dim[['customer_id']].assign(customer_key=range(1, len(customer_dim) + 1)),
+                customer_dim[['customer_id', 'customer_key']],
                 on='customer_id',
                 how='left'
             )
@@ -83,6 +89,7 @@ class FactTableCreator:
             )
         
         # 4. Add salesperson_key (simplified - assign based on region)
+        # IMPORTANT: We're only adding salesperson_key, NOT employee_id
         if db_connection:
             try:
                 cursor = db_connection.cursor(dictionary=True)
@@ -109,6 +116,9 @@ class FactTableCreator:
             fact_df['salesperson_key'] = fact_df['region'].map(region_mapping).fillna(1)
             logger.info("✅ Assigned salesperson keys using default mapping")
         
+        # Fill any missing salesperson_key with default value 1
+        fact_df['salesperson_key'] = fact_df['salesperson_key'].fillna(1).astype(int)
+        
         # 5. Calculate profit if cost price is available
         if 'dim_product' in dimensions and 'cost_price' in dimensions['dim_product'].columns:
             product_costs = dimensions['dim_product'].set_index('product_id')['cost_price']
@@ -119,14 +129,27 @@ class FactTableCreator:
             fact_df['profit'] = fact_df['total_amount'] * 0.2  # Assume 20% profit
             logger.info("✅ Estimated profit (20% of total)")
         
-        # 6. Select final columns for fact table
+        # 6. Select final columns for fact table - EXCLUDE employee_id
+        # These columns should match your MySQL fact_sales table schema
         fact_columns = [
             'date_key', 'product_key', 'customer_key', 'salesperson_key',
-            'quantity', 'unit_price', 'discount', 'total_amount', 'profit',
-            'payment_method', 'shipping_mode'
+            'quantity', 'unit_price', 'discount', 'total_amount', 'profit'
         ]
         
-        # Ensure all columns exist
+        # Add payment_method and shipping_mode if they exist in the data
+        if 'payment_method' in fact_df.columns:
+            fact_columns.append('payment_method')
+        else:
+            fact_df['payment_method'] = 'Credit Card'
+            fact_columns.append('payment_method')
+            
+        if 'shipping_mode' in fact_df.columns:
+            fact_columns.append('shipping_mode')
+        else:
+            fact_df['shipping_mode'] = 'Standard'
+            fact_columns.append('shipping_mode')
+        
+        # Ensure all required columns exist
         for col in fact_columns:
             if col not in fact_df.columns:
                 if col in ['discount', 'profit']:
@@ -135,20 +158,28 @@ class FactTableCreator:
                     fact_df[col] = 'Credit Card'
                 elif col == 'shipping_mode':
                     fact_df[col] = 'Standard'
+                elif col == 'salesperson_key':
+                    fact_df[col] = 1
         
-        # Create final fact table
+        # Create final fact table with only the columns we want
         final_fact_df = fact_df[fact_columns].copy()
         
         # Remove any rows with missing foreign keys
         initial_count = len(final_fact_df)
-        final_fact_df = final_fact_df.dropna(subset=['date_key', 'product_key', 'customer_key'])
+        final_fact_df = final_fact_df.dropna(subset=['date_key', 'product_key', 'customer_key', 'salesperson_key'])
         
         if initial_count != len(final_fact_df):
             logger.warning(f"Removed {initial_count - len(final_fact_df)} rows with missing foreign keys")
         
+        # Ensure all keys are integers
+        for key_col in ['date_key', 'product_key', 'customer_key', 'salesperson_key']:
+            if key_col in final_fact_df.columns:
+                final_fact_df[key_col] = final_fact_df[key_col].astype(int)
+        
         self.fact_table = final_fact_df
         
         logger.info(f"✅ Fact table created: {len(final_fact_df)} rows")
+        logger.info(f"   Columns: {list(final_fact_df.columns)}")
         logger.info(f"   Total revenue: ${final_fact_df['total_amount'].sum():,.2f}")
         logger.info(f"   Total profit: ${final_fact_df['profit'].sum():,.2f}")
         logger.info(f"   Average order value: ${final_fact_df['total_amount'].mean():,.2f}")
@@ -185,7 +216,8 @@ def test_fact_table_creator():
         'region': ['North', 'South', 'North', 'East', 'West'],
         'quantity': [1, 2, 1, 3, 1],
         'unit_price': [100, 50, 100, 75, 50],
-        'total_amount': [100, 100, 100, 225, 50]
+        'total_amount': [100, 100, 100, 225, 50],
+        'discount': [0, 0.1, 0, 0.05, 0]
     })
     
     # Sample dimensions
@@ -205,10 +237,16 @@ def test_fact_table_creator():
         'customer_key': [1, 2, 3]
     })
     
+    salesperson_dim = pd.DataFrame({
+        'salesperson_key': [1, 2, 3, 4],
+        'region': ['North', 'South', 'East', 'West']
+    })
+    
     dimensions = {
         'dim_date': date_dim,
         'dim_product': product_dim,
-        'dim_customer': customer_dim
+        'dim_customer': customer_dim,
+        'dim_salesperson': salesperson_dim
     }
     
     creator = FactTableCreator()

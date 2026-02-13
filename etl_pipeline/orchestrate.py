@@ -340,16 +340,16 @@ class ETLOrchestrator:
             logger.error(f"Error loading to database: {e}")
             return False
     
-    def _verify_data_load(self):
-        """Verify data was loaded correctly"""
-        try:
-            loader = MySQLLoader()
-            success = loader.verify_data_load()
-            loader.close_connection()
-            return success
-        except Exception as e:
-            logger.error(f"Error verifying data load: {e}")
-            return False
+    # def _verify_data_load(self):
+    #     """Verify data was loaded correctly"""
+    #     try:
+    #         loader = MySQLLoader()
+    #         success = loader.verify_data_load()
+    #         loader.close_connection()
+    #         return success
+    #     except Exception as e:
+    #         logger.error(f"Error verifying data load: {e}")
+    #         return False
 
 def main():
     """Main function to run ETL pipeline"""
