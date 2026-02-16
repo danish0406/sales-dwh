@@ -1,101 +1,101 @@
-customer_id,customer_name,email,segment,city,state,country,region,join_date,loyalty_tier
-CUST0001,Sandra Carter,sandra.carter@example.com,Consumer,Boston,NY,USA,North,2023-11-06 01:17:02.719285,Standard
-CUST0002,Stephanie Watson,stephanie.watson@example.com,Home Office,Baltimore,MD,USA,East,2023-05-20 01:17:02.719324,Standard
-CUST0003,Matthew Bell,matthew.bell@example.com,Consumer,Baltimore,MD,USA,East,2023-06-09 01:17:02.719346,Standard
-CUST0004,David Ward,david.ward@example.com,Home Office,Boston,NY,USA,North,2024-08-11 01:17:02.719362,Standard
-CUST0005,Joseph Thompson,joseph.thompson@example.com,Consumer,Philadelphia,MD,USA,East,2024-06-04 01:17:02.719380,Standard
-CUST0006,Nancy Price,nancy.price@example.com,Corporate,Houston,TX,USA,South,2023-07-11 01:17:02.719399,Standard
-CUST0007,Emily Clark,emily.clark@example.com,Consumer,Houston,TX,USA,South,2025-05-06 01:17:02.719417,Standard
-CUST0008,Kimberly Jones,kimberly.jones@example.com,Home Office,Philadelphia,MD,USA,East,2024-08-30 01:17:02.719433,Standard
-CUST0009,Timothy Ramirez,timothy.ramirez@example.com,Home Office,Boston,NY,USA,North,2025-02-25 01:17:02.719449,Standard
-CUST0010,Nicholas Rodriguez,nicholas.rodriguez@example.com,Consumer,Washington DC,MD,USA,East,2025-02-14 01:17:02.719466,Standard
-CUST0011,Cynthia Smith,cynthia.smith@example.com,Corporate,Seattle,CA,USA,West,2024-01-14 01:17:02.719482,Standard
-CUST0012,Joseph Murphy,joseph.murphy@example.com,Consumer,Chicago,NY,USA,North,2024-03-11 01:17:02.719500,Standard
-CUST0013,Michelle Ramirez,michelle.ramirez@example.com,Home Office,Chicago,NY,USA,North,2024-12-20 01:17:02.719517,Standard
-CUST0014,Kathleen Peterson,kathleen.peterson@example.com,Consumer,San Francisco,CA,USA,West,2023-06-23 01:17:02.719545,Standard
-CUST0015,Sandra Garcia,sandra.garcia@example.com,Consumer,Baltimore,MD,USA,East,2024-01-07 01:17:02.719563,Standard
-CUST0016,Emily Carter,emily.carter@example.com,Home Office,Boston,NY,USA,North,2023-06-10 01:17:02.719580,Standard
-CUST0017,Nancy Lopez,nancy.lopez@example.com,Home Office,Chicago,NY,USA,North,2024-05-05 01:17:02.719598,Standard
-CUST0018,Brenda Hernandez,brenda.hernandez@example.com,Consumer,Boston,NY,USA,North,2023-05-18 01:17:02.719615,Standard
-CUST0019,Jacob Wilson,jacob.wilson@example.com,Consumer,San Francisco,CA,USA,West,2025-07-12 01:17:02.719633,Standard
-CUST0020,Matthew Price,matthew.price@example.com,Home Office,Washington DC,MD,USA,East,2024-01-20 01:17:02.719650,Standard
-CUST0021,Barbara Scott,barbara.scott@example.com,Corporate,Chicago,NY,USA,North,2024-05-05 01:17:02.719667,Standard
-CUST0022,Sharon Murphy,sharon.murphy@example.com,Consumer,Miami,TX,USA,South,2023-12-26 01:17:02.719690,Standard
-CUST0023,Kimberly Moore,kimberly.moore@example.com,Home Office,Baltimore,MD,USA,East,2025-03-20 01:17:02.719711,Standard
-CUST0024,Stephanie Collins,stephanie.collins@example.com,Home Office,Chicago,NY,USA,North,2024-07-12 01:17:02.719729,Standard
-CUST0025,Christopher Anderson,christopher.anderson@example.com,Home Office,New York,NY,USA,North,2024-10-03 01:17:02.719748,Standard
-CUST0026,Angela Sanchez,angela.sanchez@example.com,Corporate,Miami,TX,USA,South,2025-02-01 01:17:02.719765,Standard
-CUST0027,Jennifer King,jennifer.king@example.com,Home Office,Houston,TX,USA,South,2023-09-25 01:17:02.719782,Standard
-CUST0028,Deborah Carter,deborah.carter@example.com,Consumer,Atlanta,TX,USA,South,2024-01-15 01:17:02.719800,Standard
-CUST0029,Charles Turner,charles.turner@example.com,Corporate,Seattle,CA,USA,West,2025-03-27 01:17:02.719817,Standard
-CUST0030,Ryan Howard,ryan.howard@example.com,Home Office,New York,NY,USA,North,2025-04-08 01:17:02.719834,Standard
-CUST0031,Mark Stewart,mark.stewart@example.com,Corporate,Philadelphia,MD,USA,East,2024-03-06 01:17:02.719851,Standard
-CUST0032,Donna Davis,donna.davis@example.com,Home Office,New York,NY,USA,North,2025-01-19 01:17:02.719867,Standard
-CUST0033,Kevin Ramirez,kevin.ramirez@example.com,Home Office,Houston,TX,USA,South,2025-06-23 01:17:02.719884,Standard
-CUST0034,Deborah Johnson,deborah.johnson@example.com,Home Office,Chicago,NY,USA,North,2024-12-21 01:17:02.719902,Standard
-CUST0035,Lisa Gonzalez,lisa.gonzalez@example.com,Home Office,Atlanta,TX,USA,South,2023-06-26 01:17:02.719924,Standard
-CUST0036,Jeffrey Watson,jeffrey.watson@example.com,Consumer,Seattle,CA,USA,West,2024-03-14 01:17:02.719941,Standard
-CUST0037,Emily Clark,emily.clark@example.com,Corporate,Los Angeles,CA,USA,West,2024-08-26 01:17:02.719958,Standard
-CUST0038,Stephen Thomas,stephen.thomas@example.com,Corporate,Houston,TX,USA,South,2025-11-18 01:17:02.719975,Standard
-CUST0039,Brandon Sanchez,brandon.sanchez@example.com,Home Office,Philadelphia,MD,USA,East,2024-12-02 01:17:02.719992,Standard
-CUST0040,James Stewart,james.stewart@example.com,Corporate,Atlanta,TX,USA,South,2024-03-12 01:17:02.720009,Standard
-CUST0041,Richard Flores,richard.flores@example.com,Consumer,Atlanta,TX,USA,South,2023-08-19 01:17:02.720030,Standard
-CUST0042,Stephen Allen,stephen.allen@example.com,Consumer,Chicago,NY,USA,North,2025-04-12 01:17:02.720048,Standard
-CUST0043,Betty Rivera,betty.rivera@example.com,Home Office,New York,NY,USA,North,2025-01-21 01:17:02.720066,Standard
-CUST0044,Ashley Collins,ashley.collins@example.com,Home Office,Miami,TX,USA,South,2023-10-09 01:17:02.720083,Standard
-CUST0045,Sarah Williams,sarah.williams@example.com,Corporate,Washington DC,MD,USA,East,2023-07-10 01:17:02.720101,Standard
-CUST0046,Susan Morgan,susan.morgan@example.com,Consumer,New York,NY,USA,North,2024-04-09 01:17:02.720118,Standard
-CUST0047,Eric Flores,eric.flores@example.com,Corporate,Chicago,NY,USA,North,2025-03-01 01:17:02.720134,Standard
-CUST0048,Rebecca Sanders,rebecca.sanders@example.com,Corporate,Boston,NY,USA,North,2024-03-04 01:17:02.720151,Standard
-CUST0049,Ruth Sanders,ruth.sanders@example.com,Home Office,New York,NY,USA,North,2023-12-13 01:17:02.720167,Standard
-CUST0050,Sharon Ross,sharon.ross@example.com,Corporate,New York,NY,USA,North,2024-09-06 01:17:02.720185,Standard
-CUST0051,Kenneth Morgan,kenneth.morgan@example.com,Home Office,Seattle,CA,USA,West,2025-01-31 01:17:02.720202,Standard
-CUST0052,Dorothy Rogers,dorothy.rogers@example.com,Corporate,Chicago,NY,USA,North,2023-05-19 01:17:02.720218,Standard
-CUST0053,Eric Jones,eric.jones@example.com,Home Office,New York,NY,USA,North,2025-12-03 01:17:02.720233,Standard
-CUST0054,Anna Taylor,anna.taylor@example.com,Corporate,New York,NY,USA,North,2024-06-12 01:17:02.720253,Standard
-CUST0055,Robert Stewart,robert.stewart@example.com,Corporate,Boston,NY,USA,North,2024-11-07 01:17:02.720270,Standard
-CUST0056,Gary Morgan,gary.morgan@example.com,Home Office,Chicago,NY,USA,North,2023-05-16 01:17:02.720288,Standard
-CUST0057,William White,william.white@example.com,Corporate,Baltimore,MD,USA,East,2025-08-20 01:17:02.720304,Standard
-CUST0058,Linda Wright,linda.wright@example.com,Consumer,Philadelphia,MD,USA,East,2023-07-07 01:17:02.720322,Standard
-CUST0059,Jason Lee,jason.lee@example.com,Corporate,Seattle,CA,USA,West,2024-04-18 01:17:02.720339,Standard
-CUST0060,Karen Harris,karen.harris@example.com,Home Office,Seattle,CA,USA,West,2024-03-25 01:17:02.720357,Standard
-CUST0061,Barbara Sanchez,barbara.sanchez@example.com,Corporate,San Francisco,CA,USA,West,2024-05-22 01:17:02.720378,Standard
-CUST0062,Michael Garcia,michael.garcia@example.com,Home Office,Chicago,NY,USA,North,2023-12-27 01:17:02.720395,Standard
-CUST0063,Paul Harris,paul.harris@example.com,Home Office,Baltimore,MD,USA,East,2024-06-07 01:17:02.720411,Standard
-CUST0064,Ashley Phillips,ashley.phillips@example.com,Corporate,Los Angeles,CA,USA,West,2023-09-01 01:17:02.720428,Standard
-CUST0065,Carol Young,carol.young@example.com,Corporate,Miami,TX,USA,South,2023-09-18 01:17:02.720445,Standard
-CUST0066,Kimberly Bell,kimberly.bell@example.com,Consumer,Philadelphia,MD,USA,East,2024-03-10 01:17:02.720462,Standard
-CUST0067,Sharon Bailey,sharon.bailey@example.com,Home Office,Baltimore,MD,USA,East,2025-07-10 01:17:02.720478,Standard
-CUST0068,Kenneth Cox,kenneth.cox@example.com,Consumer,Boston,NY,USA,North,2025-09-15 01:17:02.720495,Standard
-CUST0069,Eric Cox,eric.cox@example.com,Corporate,New York,NY,USA,North,2024-11-23 01:17:02.720511,Standard
-CUST0070,Jennifer Johnson,jennifer.johnson@example.com,Corporate,Houston,TX,USA,South,2024-04-23 01:17:02.720531,Standard
-CUST0071,Elizabeth Green,elizabeth.green@example.com,Home Office,Chicago,NY,USA,North,2024-04-21 01:17:02.720549,Standard
-CUST0072,Scott Davis,scott.davis@example.com,Corporate,San Francisco,CA,USA,West,2024-01-23 01:17:02.720566,Standard
-CUST0073,Carol Stewart,carol.stewart@example.com,Home Office,Houston,TX,USA,South,2023-09-01 01:17:02.720588,Standard
-CUST0074,Kenneth Sanders,kenneth.sanders@example.com,Consumer,New York,NY,USA,North,2024-03-15 01:17:02.720605,Standard
-CUST0075,Jeffrey Wood,jeffrey.wood@example.com,Home Office,Chicago,NY,USA,North,2025-09-11 01:17:02.720622,Standard
-CUST0076,Brandon Morgan,brandon.morgan@example.com,Home Office,Los Angeles,CA,USA,West,2023-12-13 01:17:02.720638,Standard
-CUST0077,Sarah Barnes,sarah.barnes@example.com,Consumer,Houston,TX,USA,South,2024-04-04 01:17:02.720655,Standard
-CUST0078,Emily Evans,emily.evans@example.com,Corporate,New York,NY,USA,North,2025-08-27 01:17:02.720675,Standard
-CUST0079,Stephen Reed,stephen.reed@example.com,Home Office,Boston,NY,USA,North,2025-05-16 01:17:02.720692,Standard
-CUST0080,Edward Williams,edward.williams@example.com,Home Office,Atlanta,TX,USA,South,2024-04-01 01:17:02.720723,Standard
-CUST0081,Brandon Nguyen,brandon.nguyen@example.com,Corporate,Houston,TX,USA,South,2024-12-30 01:17:02.720750,Standard
-CUST0082,Barbara Collins,barbara.collins@example.com,Home Office,Houston,TX,USA,South,2023-06-19 01:17:02.720774,Standard
-CUST0083,Barbara Hill,barbara.hill@example.com,Corporate,Seattle,CA,USA,West,2025-09-01 01:17:02.720792,Standard
-CUST0084,Mark Wilson,mark.wilson@example.com,Consumer,New York,NY,USA,North,2023-07-20 01:17:02.720804,Standard
-CUST0085,Rebecca Johnson,rebecca.johnson@example.com,Consumer,Baltimore,MD,USA,East,2024-06-19 01:17:02.720819,Standard
-CUST0086,Carol Scott,carol.scott@example.com,Consumer,New York,NY,USA,North,2023-06-08 01:17:02.720835,Standard
-CUST0087,Melissa Watson,melissa.watson@example.com,Corporate,Houston,TX,USA,South,2025-02-27 01:17:02.720854,Standard
-CUST0088,Sandra Roberts,sandra.roberts@example.com,Home Office,Miami,TX,USA,South,2024-05-07 01:17:02.720880,Standard
-CUST0089,Carol Barnes,carol.barnes@example.com,Consumer,Baltimore,MD,USA,East,2024-04-25 01:17:02.720901,Standard
-CUST0090,Anthony Thomas,anthony.thomas@example.com,Home Office,Philadelphia,MD,USA,East,2024-12-09 01:17:02.720920,Standard
-CUST0091,Shirley Ramirez,shirley.ramirez@example.com,Consumer,Baltimore,MD,USA,East,2024-05-20 01:17:02.720942,Standard
-CUST0092,Paul Taylor,paul.taylor@example.com,Consumer,New York,NY,USA,North,2023-12-06 01:17:02.720962,Standard
-CUST0093,Pamela Watson,pamela.watson@example.com,Home Office,Boston,NY,USA,North,2024-03-22 01:17:02.720988,Standard
-CUST0094,Andrew Sanders,andrew.sanders@example.com,Corporate,Houston,TX,USA,South,2023-12-17 01:17:02.721009,Standard
-CUST0095,Laura Roberts,laura.roberts@example.com,Home Office,Houston,TX,USA,South,2023-09-08 01:17:02.721035,Standard
-CUST0096,Helen Kelly,helen.kelly@example.com,Corporate,Washington DC,MD,USA,East,2025-06-17 01:17:02.721063,Standard
-CUST0097,Linda Hernandez,linda.hernandez@example.com,Consumer,Houston,TX,USA,South,2025-10-30 01:17:02.721155,Standard
-CUST0098,Michelle Clark,michelle.clark@example.com,Home Office,Chicago,NY,USA,North,2025-10-02 01:17:02.721179,Standard
-CUST0099,Brenda Allen,brenda.allen@example.com,Consumer,Washington DC,MD,USA,East,2025-03-28 01:17:02.721194,Standard
-CUST0100,Amy Torres,amy.torres@example.com,Home Office,Los Angeles,CA,USA,West,2023-07-14 01:17:02.721228,Standard
+customer_key,customer_id,customer_name,email,segment,city,state,country,region,join_date,loyalty_tier
+1,CUST0001,Sandra Carter,sandra.carter@example.com,Consumer,Boston,NY,USA,North,2023-11-06 01:17:02.719285,Standard
+2,CUST0002,Stephanie Watson,stephanie.watson@example.com,Home Office,Baltimore,MD,USA,East,2023-05-20 01:17:02.719324,Standard
+3,CUST0003,Matthew Bell,matthew.bell@example.com,Consumer,Baltimore,MD,USA,East,2023-06-09 01:17:02.719346,Standard
+4,CUST0004,David Ward,david.ward@example.com,Home Office,Boston,NY,USA,North,2024-08-11 01:17:02.719362,Standard
+5,CUST0005,Joseph Thompson,joseph.thompson@example.com,Consumer,Philadelphia,MD,USA,East,2024-06-04 01:17:02.719380,Standard
+6,CUST0006,Nancy Price,nancy.price@example.com,Corporate,Houston,TX,USA,South,2023-07-11 01:17:02.719399,Standard
+7,CUST0007,Emily Clark,emily.clark@example.com,Consumer,Houston,TX,USA,South,2025-05-06 01:17:02.719417,Standard
+8,CUST0008,Kimberly Jones,kimberly.jones@example.com,Home Office,Philadelphia,MD,USA,East,2024-08-30 01:17:02.719433,Standard
+9,CUST0009,Timothy Ramirez,timothy.ramirez@example.com,Home Office,Boston,NY,USA,North,2025-02-25 01:17:02.719449,Standard
+10,CUST0010,Nicholas Rodriguez,nicholas.rodriguez@example.com,Consumer,Washington DC,MD,USA,East,2025-02-14 01:17:02.719466,Standard
+11,CUST0011,Cynthia Smith,cynthia.smith@example.com,Corporate,Seattle,CA,USA,West,2024-01-14 01:17:02.719482,Standard
+12,CUST0012,Joseph Murphy,joseph.murphy@example.com,Consumer,Chicago,NY,USA,North,2024-03-11 01:17:02.719500,Standard
+13,CUST0013,Michelle Ramirez,michelle.ramirez@example.com,Home Office,Chicago,NY,USA,North,2024-12-20 01:17:02.719517,Standard
+14,CUST0014,Kathleen Peterson,kathleen.peterson@example.com,Consumer,San Francisco,CA,USA,West,2023-06-23 01:17:02.719545,Standard
+15,CUST0015,Sandra Garcia,sandra.garcia@example.com,Consumer,Baltimore,MD,USA,East,2024-01-07 01:17:02.719563,Standard
+16,CUST0016,Emily Carter,emily.carter@example.com,Home Office,Boston,NY,USA,North,2023-06-10 01:17:02.719580,Standard
+17,CUST0017,Nancy Lopez,nancy.lopez@example.com,Home Office,Chicago,NY,USA,North,2024-05-05 01:17:02.719598,Standard
+18,CUST0018,Brenda Hernandez,brenda.hernandez@example.com,Consumer,Boston,NY,USA,North,2023-05-18 01:17:02.719615,Standard
+19,CUST0019,Jacob Wilson,jacob.wilson@example.com,Consumer,San Francisco,CA,USA,West,2025-07-12 01:17:02.719633,Standard
+20,CUST0020,Matthew Price,matthew.price@example.com,Home Office,Washington DC,MD,USA,East,2024-01-20 01:17:02.719650,Standard
+21,CUST0021,Barbara Scott,barbara.scott@example.com,Corporate,Chicago,NY,USA,North,2024-05-05 01:17:02.719667,Standard
+22,CUST0022,Sharon Murphy,sharon.murphy@example.com,Consumer,Miami,TX,USA,South,2023-12-26 01:17:02.719690,Standard
+23,CUST0023,Kimberly Moore,kimberly.moore@example.com,Home Office,Baltimore,MD,USA,East,2025-03-20 01:17:02.719711,Standard
+24,CUST0024,Stephanie Collins,stephanie.collins@example.com,Home Office,Chicago,NY,USA,North,2024-07-12 01:17:02.719729,Standard
+25,CUST0025,Christopher Anderson,christopher.anderson@example.com,Home Office,New York,NY,USA,North,2024-10-03 01:17:02.719748,Standard
+26,CUST0026,Angela Sanchez,angela.sanchez@example.com,Corporate,Miami,TX,USA,South,2025-02-01 01:17:02.719765,Standard
+27,CUST0027,Jennifer King,jennifer.king@example.com,Home Office,Houston,TX,USA,South,2023-09-25 01:17:02.719782,Standard
+28,CUST0028,Deborah Carter,deborah.carter@example.com,Consumer,Atlanta,TX,USA,South,2024-01-15 01:17:02.719800,Standard
+29,CUST0029,Charles Turner,charles.turner@example.com,Corporate,Seattle,CA,USA,West,2025-03-27 01:17:02.719817,Standard
+30,CUST0030,Ryan Howard,ryan.howard@example.com,Home Office,New York,NY,USA,North,2025-04-08 01:17:02.719834,Standard
+31,CUST0031,Mark Stewart,mark.stewart@example.com,Corporate,Philadelphia,MD,USA,East,2024-03-06 01:17:02.719851,Standard
+32,CUST0032,Donna Davis,donna.davis@example.com,Home Office,New York,NY,USA,North,2025-01-19 01:17:02.719867,Standard
+33,CUST0033,Kevin Ramirez,kevin.ramirez@example.com,Home Office,Houston,TX,USA,South,2025-06-23 01:17:02.719884,Standard
+34,CUST0034,Deborah Johnson,deborah.johnson@example.com,Home Office,Chicago,NY,USA,North,2024-12-21 01:17:02.719902,Standard
+35,CUST0035,Lisa Gonzalez,lisa.gonzalez@example.com,Home Office,Atlanta,TX,USA,South,2023-06-26 01:17:02.719924,Standard
+36,CUST0036,Jeffrey Watson,jeffrey.watson@example.com,Consumer,Seattle,CA,USA,West,2024-03-14 01:17:02.719941,Standard
+37,CUST0037,Emily Clark,emily.clark@example.com,Corporate,Los Angeles,CA,USA,West,2024-08-26 01:17:02.719958,Standard
+38,CUST0038,Stephen Thomas,stephen.thomas@example.com,Corporate,Houston,TX,USA,South,2025-11-18 01:17:02.719975,Standard
+39,CUST0039,Brandon Sanchez,brandon.sanchez@example.com,Home Office,Philadelphia,MD,USA,East,2024-12-02 01:17:02.719992,Standard
+40,CUST0040,James Stewart,james.stewart@example.com,Corporate,Atlanta,TX,USA,South,2024-03-12 01:17:02.720009,Standard
+41,CUST0041,Richard Flores,richard.flores@example.com,Consumer,Atlanta,TX,USA,South,2023-08-19 01:17:02.720030,Standard
+42,CUST0042,Stephen Allen,stephen.allen@example.com,Consumer,Chicago,NY,USA,North,2025-04-12 01:17:02.720048,Standard
+43,CUST0043,Betty Rivera,betty.rivera@example.com,Home Office,New York,NY,USA,North,2025-01-21 01:17:02.720066,Standard
+44,CUST0044,Ashley Collins,ashley.collins@example.com,Home Office,Miami,TX,USA,South,2023-10-09 01:17:02.720083,Standard
+45,CUST0045,Sarah Williams,sarah.williams@example.com,Corporate,Washington DC,MD,USA,East,2023-07-10 01:17:02.720101,Standard
+46,CUST0046,Susan Morgan,susan.morgan@example.com,Consumer,New York,NY,USA,North,2024-04-09 01:17:02.720118,Standard
+47,CUST0047,Eric Flores,eric.flores@example.com,Corporate,Chicago,NY,USA,North,2025-03-01 01:17:02.720134,Standard
+48,CUST0048,Rebecca Sanders,rebecca.sanders@example.com,Corporate,Boston,NY,USA,North,2024-03-04 01:17:02.720151,Standard
+49,CUST0049,Ruth Sanders,ruth.sanders@example.com,Home Office,New York,NY,USA,North,2023-12-13 01:17:02.720167,Standard
+50,CUST0050,Sharon Ross,sharon.ross@example.com,Corporate,New York,NY,USA,North,2024-09-06 01:17:02.720185,Standard
+51,CUST0051,Kenneth Morgan,kenneth.morgan@example.com,Home Office,Seattle,CA,USA,West,2025-01-31 01:17:02.720202,Standard
+52,CUST0052,Dorothy Rogers,dorothy.rogers@example.com,Corporate,Chicago,NY,USA,North,2023-05-19 01:17:02.720218,Standard
+53,CUST0053,Eric Jones,eric.jones@example.com,Home Office,New York,NY,USA,North,2025-12-03 01:17:02.720233,Standard
+54,CUST0054,Anna Taylor,anna.taylor@example.com,Corporate,New York,NY,USA,North,2024-06-12 01:17:02.720253,Standard
+55,CUST0055,Robert Stewart,robert.stewart@example.com,Corporate,Boston,NY,USA,North,2024-11-07 01:17:02.720270,Standard
+56,CUST0056,Gary Morgan,gary.morgan@example.com,Home Office,Chicago,NY,USA,North,2023-05-16 01:17:02.720288,Standard
+57,CUST0057,William White,william.white@example.com,Corporate,Baltimore,MD,USA,East,2025-08-20 01:17:02.720304,Standard
+58,CUST0058,Linda Wright,linda.wright@example.com,Consumer,Philadelphia,MD,USA,East,2023-07-07 01:17:02.720322,Standard
+59,CUST0059,Jason Lee,jason.lee@example.com,Corporate,Seattle,CA,USA,West,2024-04-18 01:17:02.720339,Standard
+60,CUST0060,Karen Harris,karen.harris@example.com,Home Office,Seattle,CA,USA,West,2024-03-25 01:17:02.720357,Standard
+61,CUST0061,Barbara Sanchez,barbara.sanchez@example.com,Corporate,San Francisco,CA,USA,West,2024-05-22 01:17:02.720378,Standard
+62,CUST0062,Michael Garcia,michael.garcia@example.com,Home Office,Chicago,NY,USA,North,2023-12-27 01:17:02.720395,Standard
+63,CUST0063,Paul Harris,paul.harris@example.com,Home Office,Baltimore,MD,USA,East,2024-06-07 01:17:02.720411,Standard
+64,CUST0064,Ashley Phillips,ashley.phillips@example.com,Corporate,Los Angeles,CA,USA,West,2023-09-01 01:17:02.720428,Standard
+65,CUST0065,Carol Young,carol.young@example.com,Corporate,Miami,TX,USA,South,2023-09-18 01:17:02.720445,Standard
+66,CUST0066,Kimberly Bell,kimberly.bell@example.com,Consumer,Philadelphia,MD,USA,East,2024-03-10 01:17:02.720462,Standard
+67,CUST0067,Sharon Bailey,sharon.bailey@example.com,Home Office,Baltimore,MD,USA,East,2025-07-10 01:17:02.720478,Standard
+68,CUST0068,Kenneth Cox,kenneth.cox@example.com,Consumer,Boston,NY,USA,North,2025-09-15 01:17:02.720495,Standard
+69,CUST0069,Eric Cox,eric.cox@example.com,Corporate,New York,NY,USA,North,2024-11-23 01:17:02.720511,Standard
+70,CUST0070,Jennifer Johnson,jennifer.johnson@example.com,Corporate,Houston,TX,USA,South,2024-04-23 01:17:02.720531,Standard
+71,CUST0071,Elizabeth Green,elizabeth.green@example.com,Home Office,Chicago,NY,USA,North,2024-04-21 01:17:02.720549,Standard
+72,CUST0072,Scott Davis,scott.davis@example.com,Corporate,San Francisco,CA,USA,West,2024-01-23 01:17:02.720566,Standard
+73,CUST0073,Carol Stewart,carol.stewart@example.com,Home Office,Houston,TX,USA,South,2023-09-01 01:17:02.720588,Standard
+74,CUST0074,Kenneth Sanders,kenneth.sanders@example.com,Consumer,New York,NY,USA,North,2024-03-15 01:17:02.720605,Standard
+75,CUST0075,Jeffrey Wood,jeffrey.wood@example.com,Home Office,Chicago,NY,USA,North,2025-09-11 01:17:02.720622,Standard
+76,CUST0076,Brandon Morgan,brandon.morgan@example.com,Home Office,Los Angeles,CA,USA,West,2023-12-13 01:17:02.720638,Standard
+77,CUST0077,Sarah Barnes,sarah.barnes@example.com,Consumer,Houston,TX,USA,South,2024-04-04 01:17:02.720655,Standard
+78,CUST0078,Emily Evans,emily.evans@example.com,Corporate,New York,NY,USA,North,2025-08-27 01:17:02.720675,Standard
+79,CUST0079,Stephen Reed,stephen.reed@example.com,Home Office,Boston,NY,USA,North,2025-05-16 01:17:02.720692,Standard
+80,CUST0080,Edward Williams,edward.williams@example.com,Home Office,Atlanta,TX,USA,South,2024-04-01 01:17:02.720723,Standard
+81,CUST0081,Brandon Nguyen,brandon.nguyen@example.com,Corporate,Houston,TX,USA,South,2024-12-30 01:17:02.720750,Standard
+82,CUST0082,Barbara Collins,barbara.collins@example.com,Home Office,Houston,TX,USA,South,2023-06-19 01:17:02.720774,Standard
+83,CUST0083,Barbara Hill,barbara.hill@example.com,Corporate,Seattle,CA,USA,West,2025-09-01 01:17:02.720792,Standard
+84,CUST0084,Mark Wilson,mark.wilson@example.com,Consumer,New York,NY,USA,North,2023-07-20 01:17:02.720804,Standard
+85,CUST0085,Rebecca Johnson,rebecca.johnson@example.com,Consumer,Baltimore,MD,USA,East,2024-06-19 01:17:02.720819,Standard
+86,CUST0086,Carol Scott,carol.scott@example.com,Consumer,New York,NY,USA,North,2023-06-08 01:17:02.720835,Standard
+87,CUST0087,Melissa Watson,melissa.watson@example.com,Corporate,Houston,TX,USA,South,2025-02-27 01:17:02.720854,Standard
+88,CUST0088,Sandra Roberts,sandra.roberts@example.com,Home Office,Miami,TX,USA,South,2024-05-07 01:17:02.720880,Standard
+89,CUST0089,Carol Barnes,carol.barnes@example.com,Consumer,Baltimore,MD,USA,East,2024-04-25 01:17:02.720901,Standard
+90,CUST0090,Anthony Thomas,anthony.thomas@example.com,Home Office,Philadelphia,MD,USA,East,2024-12-09 01:17:02.720920,Standard
+91,CUST0091,Shirley Ramirez,shirley.ramirez@example.com,Consumer,Baltimore,MD,USA,East,2024-05-20 01:17:02.720942,Standard
+92,CUST0092,Paul Taylor,paul.taylor@example.com,Consumer,New York,NY,USA,North,2023-12-06 01:17:02.720962,Standard
+93,CUST0093,Pamela Watson,pamela.watson@example.com,Home Office,Boston,NY,USA,North,2024-03-22 01:17:02.720988,Standard
+94,CUST0094,Andrew Sanders,andrew.sanders@example.com,Corporate,Houston,TX,USA,South,2023-12-17 01:17:02.721009,Standard
+95,CUST0095,Laura Roberts,laura.roberts@example.com,Home Office,Houston,TX,USA,South,2023-09-08 01:17:02.721035,Standard
+96,CUST0096,Helen Kelly,helen.kelly@example.com,Corporate,Washington DC,MD,USA,East,2025-06-17 01:17:02.721063,Standard
+97,CUST0097,Linda Hernandez,linda.hernandez@example.com,Consumer,Houston,TX,USA,South,2025-10-30 01:17:02.721155,Standard
+98,CUST0098,Michelle Clark,michelle.clark@example.com,Home Office,Chicago,NY,USA,North,2025-10-02 01:17:02.721179,Standard
+99,CUST0099,Brenda Allen,brenda.allen@example.com,Consumer,Washington DC,MD,USA,East,2025-03-28 01:17:02.721194,Standard
+100,CUST0100,Amy Torres,amy.torres@example.com,Home Office,Los Angeles,CA,USA,West,2023-07-14 01:17:02.721228,Standard
