@@ -24,3 +24,21 @@ def build_dim_product():
     return pd.DataFrame(products, columns=[
         "product_id", "product_name", "category", "is_active"
     ])
+
+def build_dim_customer(df):
+    customers = (
+        df[["customer_id"]]
+        .drop_duplicates()
+        .sort_values("customer_id")
+        .reset_index(drop=True)
+    )
+
+    # Fake but realistic attributes
+    customers["customer_name"] = customers["customer_id"].apply(
+        lambda x: f"Customer {x}"
+    )
+    customers["city"] = "Unknown"
+    customers["state"] = "Unknown"
+    customers["country"] = "India"
+
+    return customers
