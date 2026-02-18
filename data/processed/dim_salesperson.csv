@@ -1,5 +1,0 @@
-salesperson_key,salesperson_id,salesperson_name,region,territory,email,hire_date,commission_rate
-1,SP001,John Smith,North,North,john.smith@company.com,2022-01-01,0.10
-2,SP002,Sarah Johnson,South,South,sarah.johnson@company.com,2022-01-01,0.10
-3,SP003,Mike Brown,East,East,mike.brown@company.com,2022-01-01,0.10
-4,SP004,Lisa Davis,West,West,lisa.davis@company.com,2022-01-01,0.10
