@@ -44,3 +44,27 @@ def load_products():
 
     print("Products loaded successfully.")
   
+
+def load_cities():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cities = [
+        ("Mumbai", "West"),
+        ("Delhi", "North"),
+        ("Bangalore", "South"),
+        ("Hyderabad", "South"),
+        ("Lucknow", "North")
+    ]
+
+    for city_name, region in cities:
+        cursor.execute("""
+            INSERT INTO dim_city (city_name, region)
+            VALUES (%s, %s)
+        """, (city_name, region))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    print("Cities loaded successfully.")
